@@ -1,0 +1,10 @@
+{
+  "categorias": [
+    {
+      "id": 1,
+      "nome": "Músicas Calmas",
+      "descrição": "Músicas calmas que aquecem a alma",
+      "cor": "#000000"
+    }
+  ]
+}
