@@ -32,7 +32,7 @@ function CadastroCategoria() {
     if (window.location.hostname.includes('localhost')) {
       URL = 'http://localhost:8080/categorias';
     } else {
-      URL = 'http://timeflix.herokuapp.com/categorias';
+      URL = 'https://timeflix.herokuapp.com/categorias';
     }
     fetch(URL)
       .then(async (respostaDoServer) => {
