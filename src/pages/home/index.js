@@ -1,49 +1,56 @@
-import React from 'react';
-import Menu from '../../components/Menu';
-import dadosIniciais from '../../data/dados_iniciais.json'
-import BannerMain from '../../components/BannerMain'
-import Carousel from '../../components/Carousel'
-import Footer from '../../components/Footer'
+import React, { useEffect, useState } from 'react';
+import BannerMain from '../../components/BannerMain';
+import PageDefault from '../../components/PageDefault';
+import Carousel from '../../components/Carousel';
+import config from '../../data/config';
 
 function Home() {
+  const [dadosCategoriasVideos, setDadosCategoriasVideos] = useState([]);
+
+  // Pega as informações do Servidor
+  useEffect(() => {
+    const URL = `${config.URL_BACKEND}/categorias?_embed=videos`;
+    fetch(URL)
+      .then(async (respostaDoServer) => {
+        if (respostaDoServer.ok) {
+          const resposta = await respostaDoServer.json();
+          setDadosCategoriasVideos(resposta);
+          return;
+        }
+        throw new Error('Não foi possível pegar os dados');
+      });
+  }, []);
+
   return (
-    <div style={{background: "#000000"}}>
-      <Menu/>
+    <PageDefault paddingAll={0}>
+      {dadosCategoriasVideos.length === 0 && (<div>Loading...</div>)}
 
-      <BannerMain
-        videoTitle = {dadosIniciais.categorias[0].videos[0].titulo}
-        url={dadosIniciais.categorias[0].videos[0].url}
-        videoDescription={"Belo vídeo esse aqui"}
-      />
+      {dadosCategoriasVideos.map((categoria, indice) => {
+        if (indice === 0) {
+          return (
+            <div key={categoria.id}>
+              <BannerMain
+                videoTitle={dadosCategoriasVideos[0].videos[0].titulo}
+                url={dadosCategoriasVideos[0].videos[0].url}
+                videoDescription={dadosCategoriasVideos[0].videos[0].description}
+              />
+              <Carousel
+                ignoreFirstVideo
+                category={dadosCategoriasVideos[0]}
+              />
+            </div>
+          );
+        }
 
-      <Carousel 
-        ignoreFirstVideo
-        category={dadosIniciais.categorias[0]}
-      />
+        return (
+          <Carousel
+            key={categoria.id}
+            category={categoria}
+          />
+        );
+      })}
 
-      <Carousel 
-        category={dadosIniciais.categorias[1]}
-      />
-
-      <Carousel 
-        category={dadosIniciais.categorias[2]}
-      />
-
-      <Carousel 
-        category={dadosIniciais.categorias[3]}
-      />
-
-      <Carousel 
-        category={dadosIniciais.categorias[4]}
-      />
-
-      <Carousel 
-        category={dadosIniciais.categorias[5]}
-      />
-
-      <Footer/>
-
-    </div>
+    </PageDefault>
   );
 }
 

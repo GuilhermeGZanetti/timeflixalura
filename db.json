@@ -2,9 +2,53 @@
   "categorias": [
     {
       "id": 1,
-      "nome": "Músicas Calmas",
-      "descrição": "Músicas calmas que aquecem a alma",
-      "cor": "#000000"
+      "titulo": "Músicas Calmas",
+      "cor": "#6BD1FF",
+      "link_extra": {
+        "text": "Playlist Youtube",
+        "url": "https://www.alura.com.br/cursos-online-front-end"
+      }
+    },
+    {
+      "id": 2,
+      "titulo": "Músicas Alegres",
+      "cor": "#000000",
+      "link_extra": {
+        "text": "Playlist Youtube",
+        "url": "https://www.alura.com.br/cursos-online-front-end"
+      }
+    }
+  ],
+  "videos": [
+    {
+      "id": 1,
+      "categoriaId": 1,
+      "titulo": "Pescando no Céu",
+      "url": "https://www.youtube.com/watch?v=39YWAkd-KY0"
+    },
+    {
+      "id": 2,
+      "categoriaId": 1,
+      "titulo": "Calmo Riacho",
+      "url": "https://www.youtube.com/watch?v=bxFA3-PyOPc"
+    },
+    {
+      "id": 3,
+      "categoriaId": 2,
+      "titulo": "Ichizu na Kimochi",
+      "url": "https://www.youtube.com/watch?v=-KSixCLLwuQ"
+    },
+    {
+      "titulo": "Way of Life",
+      "url": "https://www.youtube.com/watch?v=Vo34Q3daAbI",
+      "categoriaId": 1,
+      "id": 4
+    },
+    {
+      "titulo": "Qubrador de preda",
+      "url": "https://www.youtube.com/watch?v=BZjTADvyo98",
+      "categoriaId": 1,
+      "id": 5
     }
   ]
 }

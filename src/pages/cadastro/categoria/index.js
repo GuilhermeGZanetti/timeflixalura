@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import useForms from '../../../hooks/useForm';
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormFIeld';
 import Button from '../../../components/Button';
@@ -8,24 +9,10 @@ function CadastroCategoria() {
   const [categorias, setCategorias] = useState([]);
 
   const categoriaInicial = {
-    nome: '', descricao: '', cor: ' ',
+    titulo: '', descricao: '', cor: ' ',
   };
-  const [categoriaAtual, setCategoria] = useState(categoriaInicial);
 
-  function setValorCategoria(chave, valor) {
-    // chave: nome, descricao, cor
-    setCategoria({
-      ...categoriaAtual,
-      [chave]: valor, // nome: 'Filme'
-    });
-  }
-
-  function handleChange(eventInf) {
-    setValorCategoria(
-      eventInf.target.getAttribute('name'),
-      eventInf.target.value,
-    );
-  }
+  const { value, handleChange } = useForms(categoriaInicial);
 
   useEffect(() => {
     let URL;
@@ -49,26 +36,26 @@ function CadastroCategoria() {
     <PageDefault>
       <h1>
         Cadastro de Categoria:
-        {categoriaAtual.nome}
+        {value.titulo}
       </h1>
       <form onSubmit={function handleSubmit(infosDoEvento) {
         infosDoEvento.preventDefault();
 
-        setCategorias([...categorias, categoriaAtual]);
+        setCategorias([...categorias, value]);
       }}
       >
         <FormField
-          title="Nome da Categoria:"
+          title="Título da Categoria:"
           type="text"
-          value={categoriaAtual.nome}
-          name="nome"
+          value={value.titulo}
+          name="titulo"
           onChange={handleChange}
         />
 
         <FormField
           title="Descrição:"
           type="textarea"
-          value={categoriaAtual.descricao}
+          value={value.descricao}
           name="descricao"
           onChange={handleChange}
         />
@@ -76,7 +63,7 @@ function CadastroCategoria() {
         <FormField
           title="Cor:"
           type="color"
-          value={categoriaAtual.cor}
+          value={value.cor}
           name="cor"
           onChange={handleChange}
         />
@@ -87,8 +74,8 @@ function CadastroCategoria() {
 
         <ul>
           {categorias.map((categoria) => (
-            <li key={`${categoria.nome}`}>
-              {categoria.nome}
+            <li key={`${categoria.titulo}`}>
+              {categoria.titulo}
             </li>
           ))}
         </ul>
