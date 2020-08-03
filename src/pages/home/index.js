@@ -2,22 +2,19 @@ import React, { useEffect, useState } from 'react';
 import BannerMain from '../../components/BannerMain';
 import PageDefault from '../../components/PageDefault';
 import Carousel from '../../components/Carousel';
-import config from '../../data/config';
+import categoriasRepository from '../../repositories/categorias';
 
 function Home() {
   const [dadosCategoriasVideos, setDadosCategoriasVideos] = useState([]);
 
   // Pega as informações do Servidor
   useEffect(() => {
-    const URL = `${config.URL_BACKEND}/categorias?_embed=videos`;
-    fetch(URL)
-      .then(async (respostaDoServer) => {
-        if (respostaDoServer.ok) {
-          const resposta = await respostaDoServer.json();
-          setDadosCategoriasVideos(resposta);
-          return;
-        }
-        throw new Error('Não foi possível pegar os dados');
+    categoriasRepository.getAllWithVideos()
+      .then((categoriasComVideos) => {
+        setDadosCategoriasVideos(categoriasComVideos);
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
   }, []);
 

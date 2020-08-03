@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormFIeld';
 import Button from '../../../components/Button';
 import useForms from '../../../hooks/useForm';
 import videoRepository from '../../../repositories/videos';
+import categoriasRepository from '../../../repositories/categorias';
 
 function CadastroVideo() {
   const { value, handleChange } = useForms({});
+  const [categorias, setCategorias] = useState([]);
+  const categoryTitles = categorias.map(({ titulo }) => titulo);
   const history = useHistory();
+
+  useEffect(() => {
+    categoriasRepository
+      .getAll()
+      .then((categoriasFromServer) => {
+        setCategorias(categoriasFromServer);
+      });
+  }, []);
 
   return (
     <PageDefault>
@@ -16,12 +27,21 @@ function CadastroVideo() {
 
       <form onSubmit={function handleSubmit(infosDoEvento) {
         infosDoEvento.preventDefault();
+
+        const categoriaSelecionada = categorias.find(
+          (categoria) => categoria.titulo === value.categoria,
+        );
+
+        // eslint-disable-next-line no-console
+        console.log('ID da Categoria selecionada:', categoriaSelecionada.id);
+
         videoRepository.create({
           titulo: value.titulo,
           url: value.url,
-          categoriaId: 1,
+          categoriaId: categoriaSelecionada.id,
         })
           .then(() => {
+            // eslint-disable-next-line no-console
             console.log('Video cadastrado com sucesso!');
             history.push('/');
           });
@@ -46,9 +66,10 @@ function CadastroVideo() {
         <FormField
           title="Categoria:"
           type="text"
-          value={value.categoriaId}
-          name="url"
+          value={value.categoria}
+          name="categoria"
           onChange={handleChange}
+          suggestions={categoryTitles}
         />
 
         <Button>
